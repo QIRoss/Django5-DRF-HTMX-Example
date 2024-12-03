@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Django + HTMX</title>
+    <script src="https://unpkg.com/htmx.org"></script>
+</head>
+<body>
+    <h1>HTMX with Django Example</h1>
+    
+    <h2>Normal View Example</h2>
+    <button hx-get="/normal-view/" hx-target="#normal-result">Load Normal View</button>
+    <div id="normal-result"></div>
+
+    <h2>DRF Endpoint Example</h2>
+    <button hx-get="/api/drf-endpoint/" hx-target="#drf-result">Load DRF Endpoint</button>
+    <div id="drf-result"></div>
+
+    <script>
+        // Optional: Handle JSON responses from DRF
+        document.body.addEventListener('htmx:afterRequest', (event) => {
+            const target = event.detail.target;
+            const xhr = event.detail.xhr;
+            if (xhr.getResponseHeader('Content-Type') === 'application/json') {
+                const data = JSON.parse(xhr.responseText);
+                target.innerHTML = data.message;
+            }
+        });
+    </script>
+</body>
+</html>
